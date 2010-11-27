@@ -4,12 +4,23 @@ include $(CLEAR_VARS)
 ifeq ($(TARGET_ARCH),arm)
 	LOCAL_CFLAGS += -DOPENSSL_BN_ASM_MONT -DAES_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM
 	LOCAL_SRC_FILES:= 0.9.9-dev/bn/armv4-mont.s \
+ 			  bn/bn_asm.c \
 	                  0.9.9-dev/aes/aes-armv4.s \
 	                  0.9.9-dev/sha/sha1-armv4-large.s \
 	                  0.9.9-dev/sha/sha256-armv4.s \
 	                  0.9.9-dev/sha/sha512-armv4.s
 else
+ifeq ($(TARGET_ARCH),mips)
+        LOCAL_CFLAGS += -DSHA1_ASM -DSHA256_ASM
+        LOCAL_SRC_FILES:= 0.9.9-dev/bn/bn-mips.s \
+			  aes/aes_core.c \
+                          0.9.9-dev/sha/sha1-mips.s \
+                          0.9.9-dev/sha/sha256-mips.s 
+else
 	LOCAL_SRC_FILES:= aes/aes_core.c
+	LOCAL_SRC_FILES+= bn/bn_asm.c
+endif
+
 endif
 
 ifeq ($(TARGET_SIMULATOR),true)
@@ -151,7 +162,6 @@ LOCAL_SRC_FILES+= \
 	bn/bn_prime.c \
 	bn/bn_err.c \
 	bn/bn_sqr.c \
-	bn/bn_asm.c \
 	bn/bn_recp.c \
 	bn/bn_mont.c \
 	bn/bn_mpi.c \
