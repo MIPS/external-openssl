@@ -11,11 +11,16 @@ ifeq ($(TARGET_ARCH),arm)
 	                  0.9.9-dev/sha/sha512-armv4.s
 else
 ifeq ($(TARGET_ARCH),mips)
+  ifneq ($(ARCH_HAS_BIGENDIAN),true)
         LOCAL_CFLAGS += -DSHA1_ASM -DSHA256_ASM
         LOCAL_SRC_FILES:= 0.9.9-dev/bn/bn-mips.s \
 			  aes/aes_core.c \
                           0.9.9-dev/sha/sha1-mips.s \
-                          0.9.9-dev/sha/sha256-mips.s 
+                          0.9.9-dev/sha/sha256-mips.s
+  else
+        LOCAL_SRC_FILES:= aes/aes_core.c
+        LOCAL_SRC_FILES+= bn/bn_asm.c
+  endif
 else
 	LOCAL_SRC_FILES:= aes/aes_core.c
 	LOCAL_SRC_FILES+= bn/bn_asm.c
