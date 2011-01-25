@@ -9,15 +9,21 @@ ifeq ($(TARGET_ARCH),arm)
     sha/asm/sha1-armv4-large.s \
     sha/asm/sha256-armv4.s \
     sha/asm/sha512-armv4.s
-endif
-ifeq ($(TARGET_ARCH),mips)
-  ifneq (($TARGET_HAS_BIGENDIAN),true)
-   target_cflags := -DSHA1_ASM -DSHA256_ASM
-   target_src_files := \
-     0.9.9-dev/bn/bn-mips.s \
-     aes/aes_core.c \
-     0.9.9-dev/sha/sha1-mips.s \
-     0.9.9-dev/sha/sha256-mips.s 
+else
+  ifeq ($(TARGET_ARCH),mips)
+    ifneq (($TARGET_HAS_BIGENDIAN),true)
+     target_cflags := -DSHA1_ASM -DSHA256_ASM
+     target_src_files := \
+       0.9.9-dev/bn/bn-mips.s \
+       aes/aes_core.c \
+       0.9.9-dev/sha/sha1-mips.s \
+       0.9.9-dev/sha/sha256-mips.s 
+    else
+      target_cflags :=
+      target_src_files := \
+        aes/aes_core.c \
+        bn/bn_asm.c
+    endif
   else
     target_cflags :=
     target_src_files := \
@@ -25,12 +31,9 @@ ifeq ($(TARGET_ARCH),mips)
       bn/bn_asm.c
   endif
 endif
-ifeq ($findstring($(TARGET_ARCH),mips arm),)
-  target_cflags :=
-  target_src_files := \
-    aes/aes_core.c \
-    bn/bn_asm.c
-endif
+
+non_arm_src_files := aes/aes_core.c \
+      bn/bn_asm.c
 
 local_src_files := \
 	cryptlib.c \
