@@ -555,8 +555,9 @@ ifeq ($(TARGET_ARCH),arm)
 endif
 ifeq ($(TARGET_ARCH),mips)
     ifneq (($TARGET_HAS_BIGENDIAN),true)
-      LOCAL_SRC_FILES += $(mips_src_files)
-      LOCAL_CFLAGS += $(mips_cflags)
+      #LOCAL_SRC_FILES += $(mips_src_files)
+      #LOCAL_CFLAGS += $(mips_cflags)
+      LOCAL_SRC_FILES += $(other_arch_src_files)
     else
       LOCAL_SRC_FILES += $(other_arch_src_files)
     endif
@@ -592,8 +593,9 @@ ifeq ($(TARGET_ARCH),arm)
 endif
 ifeq ($(TARGET_ARCH),mips)
     ifneq (($TARGET_HAS_BIGENDIAN),true)
-      LOCAL_SRC_FILES += $(mips_src_files)
-      LOCAL_CFLAGS += $(mips_cflags)
+      #LOCAL_SRC_FILES += $(mips_src_files)
+      #LOCAL_CFLAGS += $(mips_cflags)
+      LOCAL_SRC_FILES += $(other_arch_src_files)
     else
       LOCAL_SRC_FILES += $(other_arch_src_files)
     endif
